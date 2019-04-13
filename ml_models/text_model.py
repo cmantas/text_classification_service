@@ -38,16 +38,15 @@ class TextModel(ABC):
 
     def vectorize_batch(self, batch):
         texts, cats = zip(*batch)
-        X = self.vectorize_texts(texts, self.tokenizer)
-        Y = self.encoder.transform(cats)
+        X = self.vectorize_texts(texts)
+        Y = self.label_encoder.transform(cats)
         return (X, Y)
 
-    def training_gen(self, texts, batch_size):
+    def training_gen(self, texts):
         while True:
             shuffle(texts)
-            for batch in batcher(texts, batch_size):
-                X, Y = self.vectorize_batch(batch, self.tokenizer,
-                                            self.label_encoder)
+            for batch in batcher(texts, self.BATCH_SIZE):
+                X, Y = self.vectorize_batch(batch)
                 yield (X, Y)
 
     def save_to_files(self, model_fname, tokenizer_fname, encoder_fname):
