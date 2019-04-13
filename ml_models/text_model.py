@@ -36,19 +36,18 @@ class TextModel(ABC):
         model = cls.model_description(enc)
         return cls(model, tok, enc)
 
-    @classmethod
-    def vectorize_batch(cls, batch, tokenizer, encoder):
+    def vectorize_batch(self, batch):
         texts, cats = zip(*batch)
-        X = cls.vectorize_texts(texts, tokenizer)
-        Y = encoder.transform(cats)
+        X = self.vectorize_texts(texts, self.tokenizer)
+        Y = self.encoder.transform(cats)
         return (X, Y)
 
-    @classmethod
-    def training_gen(cls, texts, batch_size, tokenizer, label_encoder):
+    def training_gen(self, texts, batch_size):
         while True:
             shuffle(texts)
             for batch in batcher(texts, batch_size):
-                X, Y = cls.vectorize_batch(batch, tokenizer, label_encoder)
+                X, Y = self.vectorize_batch(batch, self.tokenizer,
+                                            self.label_encoder)
                 yield (X, Y)
 
     def save_to_files(self, model_fname, tokenizer_fname, encoder_fname):
