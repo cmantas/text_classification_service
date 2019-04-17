@@ -1,8 +1,8 @@
 from keras.preprocessing.text import Tokenizer
-from abc import ABC
+from ml_models import TextModel
 
 
-class WordLevelModel(ABC):
+class WordLevelModel(TextModel):
     @classmethod
     def tokenizer(cls, texts):
         tokenizer = Tokenizer(cls.VOCAB_SIZE,
