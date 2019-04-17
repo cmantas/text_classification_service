@@ -1,6 +1,6 @@
 from keras.models import load_model
 import pickle
-from abc import ABC
+from abc import ABC, abstractmethod
 from random import shuffle
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -17,6 +17,26 @@ class TextModel(ABC):
         self.model = model
         self.tokenizer = tokenizer
         self.label_encoder = encoder
+
+    @classmethod
+    @abstractmethod
+    def tokenizer(cls, labels):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def encoder(cls, texts):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def model_description(cls, encoder):
+        pass
+
+    @abstractmethod
+    def vectorize_texts(self, texts):
+        pass
+
 
     @classmethod
     def create_from_files(cls, model_fname, tokenizer_fname, encoder_fname):
