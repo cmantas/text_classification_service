@@ -4,6 +4,10 @@ from abc import ABC, abstractmethod
 from random import shuffle
 import numpy as np
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+mpl.style.use('seaborn')
 
 def batcher(phrases, batch_size):
   for i in range(0, len(phrases), batch_size):
@@ -17,6 +21,7 @@ class TextModel(ABC):
         self.model = model
         self.tokenizer = tokenizer
         self.label_encoder = encoder
+        self.training_history = None
 
     @classmethod
     @abstractmethod
@@ -102,7 +107,27 @@ class TextModel(ABC):
                                         steps_per_epoch=steps_per_epoch,
                                         validation_data=val_data,
                                         max_queue_size=2)
+        self.training_history = hist
         return hist
+
+    def plot_training_history(self):
+        """plots the metrics of an instance of this model's training history"""
+        if self.training_history is None:
+            raise Exception('Model has not been trained yet')
+        history = self.training_history.history
+        plt.plot(history['loss'])
+        labels = ['training loss']
+        metrics = {'val_loss': 'validation loss', 'acc': 'training accuracy',
+                   'val_acc': 'validation accuracy'}
+        for metric, label in metrics.items():
+            if metric in history:
+                plt.plot(history[metric])
+                labels.append(label)
+
+        plt.title(self.__class__.__name__ + ': Training metrics')
+        plt.xlabel('epoch')
+        plt.legend(labels, loc='center right')
+        plt.show()
 
     def save_to_files(self, model_fname, tokenizer_fname, encoder_fname):
         self.model.save(model_fname)
