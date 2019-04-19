@@ -2,7 +2,7 @@ from keras.layers import Dense, LSTM, Embedding
 from keras.models import Sequential
 from keras.preprocessing.sequence import pad_sequences
 
-from ml_models import TextModel, WordLevelModel, MultiClassModel
+from ml_models import WordLevelModel, MultiClassModel
 
 
 class LSTMModel(MultiClassModel, WordLevelModel):
@@ -12,13 +12,16 @@ class LSTMModel(MultiClassModel, WordLevelModel):
     MAX_SEQ_LEN = 100
 
     @classmethod
+    def recurrent_layers(cls):
+        return [LSTM(128)]
+
+    @classmethod
     def model_description(cls, encoder):
         num_labels = len(encoder.classes_)
         layers = [
             Embedding(cls.VOCAB_SIZE, cls.EMBEDDING_DIMENTION,
                       input_length=cls.MAX_SEQ_LEN),
-            #LSTM(128, return_sequences=True),
-            LSTM(128),
+            *cls.recurrent_layers(),
             Dense(num_labels, activation='softmax')
         ]
 
