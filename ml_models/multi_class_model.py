@@ -3,6 +3,9 @@ from sklearn.preprocessing import LabelEncoder
 
 
 class MultiClassModel(ABC):
+    ACTIVATION = 'softmax'
+    LOSS_FUNCTION = 'sparse_categorical_crossentropy'
+
     @classmethod
     def encoder(cls, labels):
         enc = LabelEncoder()

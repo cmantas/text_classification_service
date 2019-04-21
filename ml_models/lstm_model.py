@@ -21,11 +21,11 @@ class LSTMModel(MultiClassModel, WordLevelModel):
             Embedding(cls.VOCAB_SIZE, cls.EMBEDDING_DIMENTION,
                       input_length=cls.MAX_SEQ_LEN),
             *cls.recurrent_layers(),
-            Dense(num_labels, activation='softmax')
+            Dense(num_labels, activation=cls.ACTIVATION)
         ]
 
         model = Sequential(layers)
-        model.compile(loss='sparse_categorical_crossentropy',
+        model.compile(loss=cls.LOSS_FUNCTION,
                       optimizer='adam', metrics=['accuracy'])
 
         return model

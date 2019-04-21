@@ -52,14 +52,14 @@ class Conv2DModel(MultiClassModel, WordLevelModel):
         concatenated_tensor = Concatenate(axis=1)([maxpool_0, maxpool_1, maxpool_2])
         flatten = Flatten()(concatenated_tensor)
         dropout = Dropout(drop)(flatten)
-        output = Dense(num_labels, activation='softmax')(dropout)
+        output = Dense(num_labels, activation=cls.ACTIVATION)(dropout)
 
         # this creates a model that includes
         model = Model(inputs=inputs, outputs=output)
 
         # adam = Adam(lr=1e-4, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 
-        model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',
+        model.compile(optimizer='adam', loss=cls.LOSS_FUNCTION,
                       metrics=['accuracy'])
 
         return model

@@ -13,11 +13,11 @@ class FeedForwardModel(MultiClassModel, WordLevelModel):
         vocab_size = cls.VOCAB_SIZE
         layers = [
             Dense(128, input_shape=(vocab_size,), activation='relu'),
-            Dense(num_labels, activation='softmax')
+            Dense(num_labels, activation=cls.ACTIVATION)
         ]
         model = Sequential(layers)
 
-        model.compile(loss='sparse_categorical_crossentropy',
+        model.compile(loss=cls.LOSS_FUNCTION,
                       optimizer='adam', metrics=['accuracy'])
         return model
 

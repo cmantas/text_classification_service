@@ -22,13 +22,13 @@ class Conv1DModel(MultiClassModel, WordLevelModel):
             # Dropout(0.1),
             Dense(20, activation='relu'),
             Dropout(0.05),
-            Dense(num_labels, activation='sigmoid'),
+            Dense(num_labels, activation=cls.ACTIVATION),
         ]
 
         model = Sequential(layers)
 
         model.compile(optimizer='adam',
-                      loss='sparse_categorical_crossentropy',
+                      loss=cls.LOSS_FUNCTION,
                       metrics=['accuracy'])
         return model
 
