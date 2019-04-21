@@ -12,6 +12,9 @@ class MultiClassModel(ABC):
         enc.fit(labels)
         return enc
 
+    def vectorize_labels(self, labels):
+        return self.label_encoder.transform(labels)
+
     def num_labels(self):
         return len(self.label_encoder.classes_)
 

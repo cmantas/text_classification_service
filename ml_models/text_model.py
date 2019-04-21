@@ -47,6 +47,9 @@ class TextModel(ABC):
     def vectorize_texts(self, texts):
         pass
 
+    @abstractmethod
+    def vectorize_labels(self, labels):
+        pass
 
     @classmethod
     def create_from_files(cls, model_fname, tokenizer_fname, encoder_fname):
@@ -62,9 +65,9 @@ class TextModel(ABC):
         return cls(tok, enc)
 
     def vectorize_batch(self, batch):
-        texts, cats = zip(*batch)
+        texts, labels = zip(*batch)
         X = self.vectorize_texts(texts)
-        Y = self.label_encoder.transform(cats)
+        Y = self.vectorize_labels(labels)
         return (X, Y)
 
     def training_gen(self, texts):
