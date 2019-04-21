@@ -17,11 +17,16 @@ def batcher(phrases, batch_size):
 
 
 class TextModel(ABC):
-    def __init__(self, model, tokenizer, encoder):
-        self.model = model
+    def __init__(self, tokenizer, encoder):
         self.tokenizer = tokenizer
         self.label_encoder = encoder
+        num_classes = self.num_labels()
+        self.model = self.model_description(num_classes)
         self.training_history = None
+
+    @abstractmethod
+    def num_labels(self):
+        pass
 
     @classmethod
     @abstractmethod
@@ -35,7 +40,7 @@ class TextModel(ABC):
 
     @classmethod
     @abstractmethod
-    def model_description(cls, encoder):
+    def model_description(cls, num_labels):
         pass
 
     @abstractmethod
@@ -54,8 +59,7 @@ class TextModel(ABC):
     def create_from_corpus(cls, texts, labels):
         tok = cls.tokenizer(texts)
         enc = cls.encoder(labels)
-        model = cls.model_description(enc)
-        return cls(model, tok, enc)
+        return cls(tok, enc)
 
     def vectorize_batch(self, batch):
         texts, cats = zip(*batch)

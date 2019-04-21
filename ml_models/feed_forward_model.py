@@ -9,9 +9,8 @@ class FeedForwardModel(MultiClassModel, WordLevelModel):
     BATCH_SIZE = 4000
 
     @classmethod
-    def model_description(cls, encoder):
+    def model_description(cls, num_labels):
         vocab_size = cls.VOCAB_SIZE
-        num_labels = len(encoder.classes_)
         layers = [
             Dense(128, input_shape=(vocab_size,), activation='relu'),
             Dense(num_labels, activation='softmax')

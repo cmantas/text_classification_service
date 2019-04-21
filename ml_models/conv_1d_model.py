@@ -11,8 +11,7 @@ class Conv1DModel(MultiClassModel, WordLevelModel):
     MAX_SEQ_LEN = 100
 
     @classmethod
-    def model_description(cls, encoder):
-        num_labels = len(encoder.classes_)
+    def model_description(cls, num_labels):
         embedding_dim = 128
         num_filters = 20
         filter_size = 5

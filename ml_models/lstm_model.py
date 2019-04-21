@@ -16,8 +16,7 @@ class LSTMModel(MultiClassModel, WordLevelModel):
         return [LSTM(128)]
 
     @classmethod
-    def model_description(cls, encoder):
-        num_labels = len(encoder.classes_)
+    def model_description(cls, num_labels):
         layers = [
             Embedding(cls.VOCAB_SIZE, cls.EMBEDDING_DIMENTION,
                       input_length=cls.MAX_SEQ_LEN),
