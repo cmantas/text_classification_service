@@ -1,6 +1,7 @@
 from numpy import array
+from ml_models import TextModel
 
-class BinaryModel:
+class BinaryModel(TextModel):
     ACTIVATION = 'sigmoid'
     LOSS_FUNCTION = 'binary_crossentropy'
 
@@ -9,3 +10,8 @@ class BinaryModel:
 
     def vectorize_labels(self, labels):
         return array(labels)
+
+    @classmethod
+    def encoder(cls, texts):
+        """A binary model does not need a labelEncoder"""
+        None
