@@ -1,10 +1,10 @@
 from keras.layers import Dense
 from keras.models import Sequential
 
-from ml_models import WordLevelModel, MultiClassModel
+from ml_models import WordLevelModel
 
 
-class FeedForwardModel(MultiClassModel, WordLevelModel):
+class FeedForwardModel(WordLevelModel):
     VOCAB_SIZE = 30000
     BATCH_SIZE = 4000
 
