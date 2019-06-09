@@ -52,13 +52,6 @@ class TextModel(ABC):
         pass
 
     @classmethod
-    def create_from_files(cls, model_fname, tokenizer_fname, encoder_fname):
-        model = load_model(model_fname)
-        tokenizer = pickle.load(open(tokenizer_fname, 'rb'))
-        label_encoder = pickle.load(open(encoder_fname, 'rb'))
-        return cls(model, tokenizer, label_encoder)
-
-    @classmethod
     def create_from_corpus(cls, texts, labels):
         tok = cls.tokenizer(texts)
         enc = cls.encoder(labels)
@@ -135,8 +128,3 @@ class TextModel(ABC):
         plt.xlabel('epoch')
         plt.legend(labels, loc='center right')
         plt.show()
-
-    def save_to_files(self, model_fname, tokenizer_fname, encoder_fname):
-        self.model.save(model_fname)
-        pickle.dump(self.tokenizer, open(tokenizer_fname, 'wb'))
-        pickle.dump(self.label_encoder, open(encoder_fname, 'wb'))
