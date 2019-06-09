@@ -14,3 +14,6 @@ from ml_models.conv_2d_model import Conv2DModel
 
 class FeedForwardBinaryModel(FeedForwardModel, BinaryModel):
     pass
+
+class FeedForwardMulticlassModel(FeedForwardModel, MultiClassModel):
+    pass
