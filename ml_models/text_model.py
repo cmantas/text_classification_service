@@ -17,9 +17,8 @@ def batcher(phrases, batch_size):
 
 
 class TextModel(ABC):
-    def __init__(self, tokenizer, encoder):
+    def __init__(self, tokenizer):
         self.tokenizer = tokenizer
-        self.label_encoder = encoder
         num_classes = self.num_labels()
         self.model = self.model_description(num_classes)
         self.training_history = None
@@ -31,11 +30,6 @@ class TextModel(ABC):
     @classmethod
     @abstractmethod
     def tokenizer(cls, labels):
-        pass
-
-    @classmethod
-    @abstractmethod
-    def encoder(cls, texts):
         pass
 
     @classmethod
@@ -52,10 +46,9 @@ class TextModel(ABC):
         pass
 
     @classmethod
+    @abstractmethod
     def create_from_corpus(cls, texts, labels):
-        tok = cls.tokenizer(texts)
-        enc = cls.encoder(labels)
-        return cls(tok, enc)
+        pass
 
     def vectorize_batch(self, batch):
         texts, labels = zip(*batch)
@@ -78,21 +71,14 @@ class TextModel(ABC):
 
     def predict_labels(self, texts):
         X = self.vectorize_texts(texts)
-        encoded_predictions = self.model.predict_classes(X)
-        return list(self.label_encoder.inverse_transform(encoded_predictions))
+        predictions = self.model.predict_classes(X)
+
+        return predictions
 
     def predict_labels_with_probability(self, texts):
         X = self.vectorize_texts(texts)
-        prob_data = self.model.predict_proba(X)
-        # get indices of max values (-> aka. classes (encoded))
-        idx = np.argmax(prob_data, axis=1)
-        # get the values at those indices (the probabilies)
-        probs = prob_data[np.arange(len(prob_data)), idx]
-        probs = [float(p) for p in probs]
-        # decode the predicted classes to get the category ids
-        predictions = self.label_encoder.inverse_transform(idx)
-        # zip the predicted cids with their prediction probability
-        return list(zip(predictions, probs))
+        probability_data = self.model.predict_proba(X)
+        return probability_data
 
     def train(self, texts, labels, test_size, epochs):
         all_data = list(zip(texts, labels))
