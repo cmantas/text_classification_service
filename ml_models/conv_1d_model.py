@@ -5,7 +5,7 @@ from keras.preprocessing.sequence import pad_sequences
 from ml_models import WordLevelModel, MultiClassModel
 
 
-class Conv1DModel(MultiClassModel, WordLevelModel):
+class Conv1DModel(WordLevelModel):
     VOCAB_SIZE = 30000
     BATCH_SIZE = 4000
     MAX_SEQ_LEN = 100
