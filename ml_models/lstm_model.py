@@ -5,7 +5,7 @@ from keras.preprocessing.sequence import pad_sequences
 from ml_models import WordLevelModel, MultiClassModel
 
 
-class LSTMModel(MultiClassModel, WordLevelModel):
+class LSTMModel(WordLevelModel):
     VOCAB_SIZE = 30000
     BATCH_SIZE = 500
     EMBEDDING_DIMENTION = 128
