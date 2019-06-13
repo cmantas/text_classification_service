@@ -10,3 +10,7 @@ class WordLevelModel(TextModel):
                               lower=True)
         tokenizer.fit_on_texts(texts)
         return tokenizer
+
+    def describe(self):
+        super_dict = super().describe()
+        return {**super_dict, 'vocab_size': self.VOCAB_SIZE}

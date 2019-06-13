@@ -1,5 +1,3 @@
-from keras.models import load_model
-import pickle
 from abc import ABC, abstractmethod
 from random import shuffle
 import numpy as np
@@ -114,3 +112,8 @@ class TextModel(ABC):
         plt.xlabel('epoch')
         plt.legend(labels, loc='center right')
         plt.show()
+
+
+    def describe(self):
+        rv = {'num_labels': self.num_labels()}
+        return rv

@@ -52,3 +52,7 @@ class MultiClassModel(TextModel):
 
         # zip the predicted cids with their prediction probability
         return list(zip(predictions, probs))
+
+    def describe(self):
+        super_dict = super().describe()
+        return {**super_dict, 'type': 'multi_class'}
