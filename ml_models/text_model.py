@@ -49,17 +49,28 @@ class TextModel(ABC):
         pass
 
     def vectorize_batch(self, batch):
-        texts, labels = zip(*batch)
-        X = self.vectorize_texts(texts)
-        Y = self.vectorize_labels(labels)
-        return (X, Y)
+        # check if the batch has sample weights
+        weighted = len(batch[0]) == 3
+        # if there are sample weights, create a batch of 3 np.arrays, otherwise,
+        # 2
+        if weighted:
+            texts, labels, weights = zip(*batch)
+            X = self.vectorize_texts(texts)
+            Y = self.vectorize_labels(labels)
+            w = np.array(weights)
+            vectorized = (X, Y, w)
+        else:
+            texts, labels = zip(*batch)
+            X = self.vectorize_texts(texts)
+            Y = self.vectorize_labels(labels)
+            vectorized = (X, Y)
+        return vectorized
 
     def training_gen(self, texts):
         while True:
             shuffle(texts)
             for batch in batcher(texts, self.BATCH_SIZE):
-                X, Y = self.vectorize_batch(batch)
-                yield (X, Y)
+                yield self.vectorize_batch(batch)
 
     def predict(self, texts, probabilities=False):
         if probabilities:
@@ -78,9 +89,8 @@ class TextModel(ABC):
         probability_data = self.model.predict_proba(X)
         return probability_data
 
-    def train(self, texts, labels, test_size, epochs):
-        all_data = list(zip(texts, labels))
-        train_set, val_set = train_test_split(all_data, test_size=test_size)
+    def train(self, data, test_size, epochs):
+        train_set, val_set = train_test_split(data, test_size=test_size)
 
         val_data = self.vectorize_batch(val_set)
 
