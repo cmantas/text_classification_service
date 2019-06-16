@@ -11,7 +11,7 @@ class Conv1DModel(WordLevelModel):
     MAX_SEQ_LEN = 100
 
     @classmethod
-    def model_description(cls, num_labels):
+    def hidden_layers(cls):
         embedding_dim = 128
         num_filters = 20
         filter_size = 5
@@ -22,15 +22,8 @@ class Conv1DModel(WordLevelModel):
             # Dropout(0.1),
             Dense(20, activation='relu'),
             Dropout(0.05),
-            Dense(num_labels, activation=cls.ACTIVATION),
         ]
-
-        model = Sequential(layers)
-
-        model.compile(optimizer='adam',
-                      loss=cls.LOSS_FUNCTION,
-                      metrics=['accuracy'])
-        return model
+        return layers
 
     def vectorize_texts(self, texts):
         seqs = self.tokenizer.texts_to_sequences(texts)

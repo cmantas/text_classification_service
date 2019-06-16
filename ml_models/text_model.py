@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from random import shuffle
 import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -32,8 +34,22 @@ class TextModel(ABC):
 
     @classmethod
     @abstractmethod
-    def model_description(cls, num_labels):
+    def hidden_layers(cls):
         pass
+
+    @classmethod
+    def model_description(cls, num_labels):
+        layers = [
+            *cls.hidden_layers(),
+            # The last layer of the model will be a dense layer with a size
+            # equal to the number of layers
+            Dense(num_labels, activation=cls.ACTIVATION)
+        ]
+        model = Sequential(layers)
+
+        model.compile(loss=cls.LOSS_FUNCTION,
+                      optimizer='adam', metrics=['accuracy'])
+        return model
 
     @abstractmethod
     def vectorize_texts(self, texts):

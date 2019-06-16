@@ -16,19 +16,15 @@ class LSTMModel(WordLevelModel):
         return [LSTM(128)]
 
     @classmethod
-    def model_description(cls, num_labels):
+    def hidden_layers(cls):
         layers = [
+            # All LSTM models' first layer is an Embedding layer
             Embedding(cls.VOCAB_SIZE, cls.EMBEDDING_DIMENTION,
                       input_length=cls.MAX_SEQ_LEN),
+            # Then one or more recurrent layers follow
             *cls.recurrent_layers(),
-            Dense(num_labels, activation=cls.ACTIVATION)
         ]
-
-        model = Sequential(layers)
-        model.compile(loss=cls.LOSS_FUNCTION,
-                      optimizer='adam', metrics=['accuracy'])
-
-        return model
+        return layers
 
     def vectorize_texts(self, texts):
         seqs = self.tokenizer.texts_to_sequences(texts)

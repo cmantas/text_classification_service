@@ -9,17 +9,10 @@ class FeedForwardModel(WordLevelModel):
     BATCH_SIZE = 4000
 
     @classmethod
-    def model_description(cls, num_labels):
-        vocab_size = cls.VOCAB_SIZE
-        layers = [
-            Dense(128, input_shape=(vocab_size,), activation='relu'),
-            Dense(num_labels, activation=cls.ACTIVATION)
+    def hidden_layers(cls):
+        return [
+            Dense(128, input_shape=(cls.VOCAB_SIZE,), activation='relu')
         ]
-        model = Sequential(layers)
-
-        model.compile(loss=cls.LOSS_FUNCTION,
-                      optimizer='adam', metrics=['accuracy'])
-        return model
 
     def vectorize_texts(self, texts):
         return self.tokenizer.texts_to_matrix(texts, mode='count')

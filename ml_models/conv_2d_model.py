@@ -12,11 +12,16 @@ class Conv2DModel(WordLevelModel):
     MAX_SEQ_LEN = 100
 
     @classmethod
-    def model_description(cls, encoder):
+    def hidden_layers(cls):
+        """This method is not used, since `model_description` itself is
+        overriden"""
+        pass
+
+    @classmethod
+    def model_description(cls, num_labels):
         filter_sizes = [3, 4, 5]
         num_filters = 10
         drop = 0.1
-        num_labels = len(encoder.classes_)
         embedding_dim = 128
 
         inputs = Input(shape=(cls.MAX_SEQ_LEN,), dtype='int32')

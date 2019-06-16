@@ -10,10 +10,7 @@ def read_data(fname, token='#'):
         for l in lines:
             l = l.strip()
             elems = l.split(token)
-            if len(elems) != 2:
-                continue
-            pname, cid = elems
-            rv.append((pname, cid))
+            rv.append(elems)
         return rv
 
 def binarize(data, balance=False, target_cid=40):
