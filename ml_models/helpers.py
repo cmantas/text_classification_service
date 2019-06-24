@@ -13,6 +13,25 @@ def read_data(fname, token='#'):
             rv.append(elems)
         return rv
 
+def read_weighted_data(fname, token='#', limit=None):
+    rv = []
+    with open(fname) as f:
+        lines = f.readlines()
+        rv = []
+        for l in lines:
+            l = l.strip()
+            elems = l.split(token)
+            rv.append(elems)
+    texts, labels, weights = zip(*rv)
+
+    labels = [int(l) for l in labels]
+    weights = [int(w) for w in weights]
+    all_data = list(zip(texts, labels, weights))
+    if limit is None:
+        return all_data
+    else:
+        return all_data[:limit]
+
 def binarize(data, balance=False, target_cid=40):
     positive, negative = [], []
     for line, cid in data:
