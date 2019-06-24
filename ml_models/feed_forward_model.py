@@ -14,6 +14,6 @@ class FeedForwardModel(WordLevelModel):
         ]
 
     def vectorize_texts(self, texts):
-        return self.tokenizer.texts_to_matrix(texts, mode='count')
+        return self.tokenizer.texts_to_matrix(texts, mode='tfidf')
 
 
