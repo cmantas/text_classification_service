@@ -5,7 +5,6 @@ from ml_models import WordLevelModel
 
 
 class FeedForwardModel(WordLevelModel):
-    VOCAB_SIZE = 30000
     BATCH_SIZE = 4000
 
     @classmethod

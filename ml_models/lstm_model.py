@@ -6,7 +6,6 @@ from ml_models import WordLevelModel, MultiClassModel
 
 
 class LSTMModel(WordLevelModel):
-    VOCAB_SIZE = 30000
     BATCH_SIZE = 500
     EMBEDDING_DIMENTION = 128
     MAX_SEQ_LEN = 100

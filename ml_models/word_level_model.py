@@ -3,6 +3,8 @@ from ml_models import TextModel
 
 
 class WordLevelModel(TextModel):
+    VOCAB_SIZE = 30_000
+
     @classmethod
     def tokenizer(cls, texts):
         tokenizer = Tokenizer(cls.VOCAB_SIZE,
