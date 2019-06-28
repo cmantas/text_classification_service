@@ -24,6 +24,9 @@ class MultiClassModel(TextModel):
     def num_labels(self):
         return len(self.label_encoder.classes_)
 
+    def decode_labels(self, enc_labels):
+        return self.label_encoder.inverse_transform(enc_labels).tolist()
+
     @classmethod
     def create_from_corpus(cls, texts, labels):
         tok = cls.tokenizer(texts)
@@ -34,7 +37,7 @@ class MultiClassModel(TextModel):
         encoded_predictions = super().predict_labels(texts)
 
         # Use the label encoder to decode the predictions
-        decoded_predictions = self.label_encoder.inverse_transform(encoded_predictions)
+        decoded_predictions = self.decode_labels(encoded_predictions)
         # Return the predictions in a list form
         return list(decoded_predictions)
 
@@ -48,7 +51,7 @@ class MultiClassModel(TextModel):
         probs = [float(p) for p in probs]
 
         # decode the predicted classes to get the category ids
-        predictions = self.label_encoder.inverse_transform(idx)
+        predictions = self.decode_labels(idx)
 
         # zip the predicted cids with their prediction probability
         return list(zip(predictions, probs))
