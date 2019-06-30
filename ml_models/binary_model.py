@@ -12,7 +12,12 @@ class BinaryModel(TextModel):
         return array(labels)
 
     @classmethod
-    def create_from_corpus(cls, texts, _labels):
+    def create_from_corpus(cls, data):
+        if len(data[0]) == 3:
+            texts, _labels, _weights = zip(*data)
+        else:
+            texts, _labels = zip(*data)
+
         tok = cls.tokenizer(texts)
         return cls(tok)
 

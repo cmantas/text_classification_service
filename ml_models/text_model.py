@@ -62,7 +62,7 @@ class TextModel(ABC):
 
     @classmethod
     @abstractmethod
-    def create_from_corpus(cls, texts, labels):
+    def create_from_corpus(cls, data):
         pass
 
     def vectorize_batch(self, batch):

@@ -28,7 +28,12 @@ class MultiClassModel(TextModel):
         return self.label_encoder.inverse_transform(enc_labels).tolist()
 
     @classmethod
-    def create_from_corpus(cls, texts, labels):
+    def create_from_corpus(cls, data):
+        if len(data[0]) == 3:
+            texts, labels, _weights = zip(*data)
+        else:
+            texts, labels = zip(*data)
+
         tok = cls.tokenizer(texts)
         enc = cls.encoder(labels)
         return cls(tok, enc)
