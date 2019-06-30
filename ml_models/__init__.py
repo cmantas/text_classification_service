@@ -46,3 +46,6 @@ class Conv1DMultiClassModel(Conv1DModel, MultiClassModel):
 
 class Conv2DMultiClassModel(Conv2DModel, MultiClassModel):
     pass
+
+# Import some more elaborate models
+from ml_models.complex_models import *
