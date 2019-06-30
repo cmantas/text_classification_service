@@ -6,6 +6,7 @@ from keras.layers import Dense
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from time import time
 
 mpl.style.use('seaborn')
 
@@ -112,11 +113,16 @@ class TextModel(ABC):
 
         gen = self.training_gen(train_set)
         steps_per_epoch = len(train_set) / self.BATCH_SIZE
+
+        start_time = time()
         hist = self.model.fit_generator(gen,
                                         epochs=epochs,
                                         steps_per_epoch=steps_per_epoch,
                                         validation_data=val_data,
-                                        max_queue_size=2)
+                                        max_queue_size=2,
+                                        verbose=1)
+        training_time = time() - start_time
+        print("Total training time:", training_time)
         self.training_history = hist
         return hist
 
