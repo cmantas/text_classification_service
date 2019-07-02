@@ -3,10 +3,10 @@ from keras.layers import Dense, Embedding, Input, Reshape, Conv2D, MaxPool2D, \
 from keras import Model
 from keras.preprocessing.sequence import pad_sequences
 
-from ml_models import WordLevelModel, MultiClassModel
+from ml_models import SequenceModel
 
 
-class Conv2DModel(WordLevelModel):
+class Conv2DModel(SequenceModel):
     VOCAB_SIZE = 30000
     BATCH_SIZE = 4000
     MAX_SEQ_LEN = 100
@@ -17,17 +17,20 @@ class Conv2DModel(WordLevelModel):
         overriden"""
         pass
 
+    def recurrent_layers(cls):
+        """This method is not used, since `model_description` itself is
+        overriden"""
+        pass
+
     @classmethod
     def model_description(cls, num_labels):
         filter_sizes = [3, 4, 5]
         num_filters = 10
         drop = 0.1
-        embedding_dim = 128
+        embedding_dim = cls.EMBEDDING_DIMENTION
 
         inputs = Input(shape=(cls.MAX_SEQ_LEN,), dtype='int32')
-        embedding = Embedding(input_dim=cls.VOCAB_SIZE,
-                              output_dim=embedding_dim,
-                              input_length=cls.MAX_SEQ_LEN)(inputs)
+        embedding = cls.embedding_layer()(inputs)
 
         reshape = Reshape((cls.MAX_SEQ_LEN, embedding_dim, 1))(embedding)
 
@@ -68,10 +71,4 @@ class Conv2DModel(WordLevelModel):
                       metrics=['accuracy'])
 
         return model
-
-    def vectorize_texts(self, texts):
-        seqs = self.tokenizer.texts_to_sequences(texts)
-        X = pad_sequences(seqs, maxlen=self.MAX_SEQ_LEN)
-        return X
-
 

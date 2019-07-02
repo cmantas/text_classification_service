@@ -4,6 +4,7 @@ from ml_models.multi_class_model import MultiClassModel
 from ml_models.binary_model import BinaryModel
 
 from ml_models.word_level_model import WordLevelModel
+from ml_models.sequence_model import SequenceModel
 
 # Abstract classes for various network architectures
 from ml_models.feed_forward_model import FeedForwardModel
