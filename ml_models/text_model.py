@@ -20,8 +20,7 @@ def batcher(phrases, batch_size):
 class TextModel(ABC):
     def __init__(self, tokenizer):
         self.tokenizer = tokenizer
-        num_classes = self.num_labels()
-        self.model = self.model_description(num_classes)
+        self.model = self.model_description()
         self.training_history = None
 
     @abstractmethod
@@ -38,17 +37,16 @@ class TextModel(ABC):
     def hidden_layers(cls):
         pass
 
-    @classmethod
-    def model_description(cls, num_labels):
+    def model_description(self):
         layers = [
-            *cls.hidden_layers(),
+            *self.hidden_layers(),
             # The last layer of the model will be a dense layer with a size
             # equal to the number of layers
-            Dense(num_labels, activation=cls.ACTIVATION)
+            Dense(self.num_labels(), activation=self.ACTIVATION)
         ]
         model = Sequential(layers)
 
-        model.compile(loss=cls.LOSS_FUNCTION,
+        model.compile(loss=self.LOSS_FUNCTION,
                       optimizer='adam', metrics=['accuracy'])
         return model
 

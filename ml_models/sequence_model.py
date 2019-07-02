@@ -19,13 +19,12 @@ class SequenceModel(WordLevelModel):
         return Embedding(cls.VOCAB_SIZE, cls.EMBEDDING_DIMENTION,
                          input_length=cls.MAX_SEQ_LEN)
 
-    @classmethod
-    def hidden_layers(cls):
+    def hidden_layers(self):
         layers = [
             # All sequence models' first layer is an embedding layer
-            cls.embedding_layer(),
+            self.embedding_layer(),
             # Then one or more recurrent layers follow
-            *cls.recurrent_layers(),
+            *self.recurrent_layers(),
         ]
         return layers
 
