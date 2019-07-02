@@ -13,10 +13,8 @@ FASTTEXT_EMBEDDINGS_FILE = 'data/embeddings/wiki.simple.vec'
 
 
 class FastTextModel(SequenceModel, ABC):
-    # we can afford a bigger vocabulary, since our embeddings are not trainable
-    VOCAB_SIZE = 50_000
+    TRAINABLE_EMBEDDINGS = True
     BATCH_SIZE = 1500
-    MAX_SEQ_LEN = 50
 
     def __init__(self, tokenizer, encoder):
         self.tokenizer = tokenizer
@@ -26,7 +24,8 @@ class FastTextModel(SequenceModel, ABC):
     def embedding_layer(self):
         return Embedding(self.VOCAB_SIZE, self.EMBEDDING_DIMENTION,
                          weights=[self.embeddings_matrix],
-                         input_length=self.MAX_SEQ_LEN, trainable=False)
+                         input_length=self.MAX_SEQ_LEN,
+                         trainable=self.TRAINABLE_EMBEDDINGS)
 
     @staticmethod
     def embeddings_index():
@@ -61,16 +60,29 @@ class FastTextModel(SequenceModel, ABC):
         words_not_found = set()
         nb_words = self.VOCAB_SIZE
         embed_dim = len(list(self.EMBEDDINGS_INDEX.values())[0])
-        embedding_matrix = np.zeros((nb_words, embed_dim))
+
+        if self.TRAINABLE_EMBEDDINGS:
+            # If we are to train the embedding weights, we need to initialize
+            # them randomly
+            embedding_matrix = np.random.random_sample((nb_words, embed_dim))
+        else:
+            # If we are not to train the embedding weights, we will have unknown
+            # tokens have zero embedding vectors
+            embedding_matrix = np.zeros((nb_words, embed_dim))
+
         for word, i in self.tokenizer.word_index.items():
             if i >= nb_words:
-                continue
+                print('Reached the limit of', nb_words,
+                      '. The tokenizer has a total of ',
+                      len(self.tokenizer.word_index), 'words')
+                break
             embedding_vector = self.EMBEDDINGS_INDEX.get(word)
             if (embedding_vector is not None) and len(embedding_vector) > 0:
                 # words not found in embedding index will be all-zeros.
                 embedding_matrix[i] = embedding_vector
             else:
                 words_not_found.add(word)
-        print('number of null word embeddings: %d' % np.sum(np.sum(embedding_matrix, axis=1) == 0))
-        print("sample words not found: ", np.random.choice(list(words_not_found), 100))
+
+        print("# words not found: ", len(words_not_found))
+        print("sample words not found: ", np.random.choice(list(words_not_found), 200))
         return embedding_matrix
