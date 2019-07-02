@@ -12,6 +12,7 @@ from ml_models.lstm_model import LSTMModel
 from ml_models.cuda_lstm_model import CUDALSTMModel
 from ml_models.conv_1d_model import Conv1DModel
 from ml_models.conv_2d_model import Conv2DModel
+from ml_models.fast_text_model import FastTextModel
 
 
 # Concrete binary model classes
@@ -46,6 +47,10 @@ class Conv1DMultiClassModel(Conv1DModel, MultiClassModel):
 
 
 class Conv2DMultiClassModel(Conv2DModel, MultiClassModel):
+    pass
+
+
+class LSTMFastTextMulticlassModel(LSTMModel, FastTextModel, MultiClassModel):
     pass
 
 # Import some more elaborate models

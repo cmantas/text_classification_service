@@ -8,7 +8,7 @@ class WordLevelModel(TextModel):
     @classmethod
     def tokenizer(cls, texts):
         tokenizer = Tokenizer(cls.VOCAB_SIZE,
-                              filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~',
+                              filters="!\"#$%&()*+,-./:;<=>?@[\]^_`{|}~'“”—",
                               lower=True)
         tokenizer.fit_on_texts(texts)
         return tokenizer
