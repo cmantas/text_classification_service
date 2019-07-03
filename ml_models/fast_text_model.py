@@ -1,12 +1,11 @@
 from abc import ABC
 from keras.layers import Embedding
-from keras.preprocessing.sequence import pad_sequences
-from keras.layers import Dense
-from keras.models import Sequential
+from os.path import isfile
 import codecs
 from tqdm import tqdm
 import numpy as np
 from ml_models import SequenceModel
+import pickle
 
 #FASTTEXT_EMBEDDINGS_FILE = 'data/embeddings/wiki-news-300d-1M-subword.vec'
 FASTTEXT_EMBEDDINGS_FILE = 'data/embeddings/wiki.simple.vec'
@@ -34,6 +33,12 @@ class FastTextModel(SequenceModel, ABC):
            The index contains all tokens for which there are available 
            embeddings.
         """
+        pickle_cache = FASTTEXT_EMBEDDINGS_FILE + '.pickle'
+        # check if there is a version of the embeddings file saved a pickle
+        if isfile(pickle_cache):
+            print('Using cached embedding index')
+            return pickle.load(open(pickle_cache, 'rb'))
+
         embeddings_index = {}
         print('Building the embedding index')
         with codecs.open(FASTTEXT_EMBEDDINGS_FILE, encoding='utf-8') as f:
@@ -44,6 +49,9 @@ class FastTextModel(SequenceModel, ABC):
                 word = values[0]
                 coefs = np.asarray(values[1:], dtype='float32')
                 embeddings_index[word] = coefs
+
+        # save the embedding index as a pickle for future use
+        pickle.dump(embeddings_index, open(pickle_cache, 'wb'))
         return embeddings_index
 
     EMBEDDINGS_INDEX = embeddings_index.__func__()
