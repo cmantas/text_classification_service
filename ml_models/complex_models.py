@@ -1,5 +1,6 @@
 from ml_models import *
 from keras.layers import *
+from keras import regularizers
 
 
 class FFDropoutModel(FeedForwardMultiClassModel):
@@ -35,3 +36,24 @@ class SmallerLSTMModel(LSTMMultiClassModel):
     @classmethod
     def recurrent_layers(cls):
         return [LSTM(64)]
+
+class Bigger1DCNN(SequenceModel, MultiClassModel):
+    num_filters = 64
+    weight_decay = 1e-4
+    BATCH_SIZE = 1000
+
+    @classmethod
+    def recurrent_layers(cls):
+        #num_filters = 20
+        num_filters = 5
+        weight_decay = 1e-4
+        return [
+            Conv1D(num_filters, 7, activation='relu', padding='same'),
+            MaxPooling1D(2),
+            Conv1D(num_filters, 7, activation='relu', padding='same'),
+            GlobalMaxPooling1D(),
+            Dropout(0.05),
+            Dense(32, activation='relu',
+                  kernel_regularizer=regularizers.l2(weight_decay))
+        ]
+
