@@ -7,7 +7,6 @@ from ml_models import SequenceModel
 
 
 class Conv2DModel(SequenceModel):
-    VOCAB_SIZE = 30000
     BATCH_SIZE = 4000
     MAX_SEQ_LEN = 100
 

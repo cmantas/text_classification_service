@@ -5,19 +5,25 @@ DELIMITERS = "!\"#$%&()*+,-./:;<=>?@[\]^_`{|}~'“”—…«»′"
 
 
 class WordLevelModel(TextModel):
-    VOCAB_SIZE = 30_000
+    MAX_VOCAB_SIZE = 30_000
 
     @classmethod
     def tokenizer(cls, texts):
-        tokenizer = Tokenizer(cls.VOCAB_SIZE, filters=DELIMITERS, lower=True)
+        tokenizer = Tokenizer(filters=DELIMITERS, lower=True)
         tokenizer.fit_on_texts(texts)
-        real_vocab_size = len(tokenizer.word_index)
 
-        if real_vocab_size < cls.VOCAB_SIZE:
-            print('You are using a VOCAB_SIZE of', cls.VOCAB_SIZE,
-                  'when you only have', real_vocab_size, 'tokens')
+        corpus_vocabulary_size = len(tokenizer.word_index)
+        # If our vocabulary size exceeds the maximum allowed vocab size we
+        # need to limit it to a smaller number. Otherwise we just use it as
+        # `num_words` for our tokenize
+        tokenizer.num_words = min(cls.MAX_VOCAB_SIZE, corpus_vocabulary_size)
+
         return tokenizer
+
+    def vocabulary_size(self):
+        return self.tokenizer.num_words
+
 
     def describe(self):
         super_dict = super().describe()
-        return {**super_dict, 'vocab_size': self.VOCAB_SIZE}
+        return {**super_dict, 'vocab_size': self.vocabulary_size()}

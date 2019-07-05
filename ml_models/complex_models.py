@@ -3,23 +3,21 @@ from keras.layers import *
 
 
 class FFDropoutModel(FeedForwardMultiClassModel):
-    @classmethod
-    def hidden_layers(cls):
+    def hidden_layers(self):
         return [
-            Dense(256, input_shape=(cls.VOCAB_SIZE,)),
+            Dense(256, input_shape=(self.vocabulary_size(),)),
             LeakyReLU(alpha=0.1),
             Dropout(0.15)
         ]
 
 
 class DeeperFFDropoutModel(FeedForwardMultiClassModel):
-    @classmethod
-    def hidden_layers(cls):
+    def hidden_layers(self):
         return [
-            Dense(256, input_shape=(cls.VOCAB_SIZE,)),
+            Dense(256, input_shape=(self.vocabulary_size(),)),
             LeakyReLU(alpha=0.1),
             Dropout(0.1),
-            Dense(128, input_shape=(cls.VOCAB_SIZE,)),
+            Dense(128, input_shape=(self.vocabulary_size(),)),
             LeakyReLU(alpha=0.1),
             Dropout(0.1)
         ]

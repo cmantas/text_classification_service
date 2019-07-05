@@ -1,8 +1,8 @@
-from keras.layers import Dense, LSTM, Embedding
+from keras.layers import Embedding
 from abc import abstractmethod
 from keras.preprocessing.sequence import pad_sequences
 
-from ml_models import WordLevelModel, MultiClassModel
+from ml_models import WordLevelModel
 
 
 class SequenceModel(WordLevelModel):
@@ -14,10 +14,9 @@ class SequenceModel(WordLevelModel):
     def recurrent_layers(cls):
         pass
 
-    @classmethod
-    def embedding_layer(cls):
-        return Embedding(cls.VOCAB_SIZE, cls.EMBEDDING_DIMENTION,
-                         input_length=cls.MAX_SEQ_LEN)
+    def embedding_layer(self):
+        return Embedding(self.vocabulary_size(), self.EMBEDDING_DIMENTION,
+                         input_length=self.MAX_SEQ_LEN)
 
     def hidden_layers(self):
         layers = [

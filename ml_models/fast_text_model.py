@@ -21,7 +21,7 @@ class FastTextModel(SequenceModel, ABC):
         super().__init__(tokenizer, encoder)
 
     def embedding_layer(self):
-        return Embedding(self.VOCAB_SIZE, self.EMBEDDING_DIMENTION,
+        return Embedding(self.vocabulary_size(), self.EMBEDDING_DIMENTION,
                          weights=[self.embeddings_matrix],
                          input_length=self.MAX_SEQ_LEN,
                          trainable=self.TRAINABLE_EMBEDDINGS)
@@ -66,7 +66,7 @@ class FastTextModel(SequenceModel, ABC):
         """
         print('creating embedding matrix')
         words_not_found = set()
-        nb_words = self.VOCAB_SIZE
+        nb_words = self.vocabulary_size()
         embed_dim = len(list(self.EMBEDDINGS_INDEX.values())[0])
 
         if self.TRAINABLE_EMBEDDINGS:

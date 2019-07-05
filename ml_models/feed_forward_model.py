@@ -7,10 +7,10 @@ from ml_models import WordLevelModel
 class FeedForwardModel(WordLevelModel):
     BATCH_SIZE = 4000
 
-    @classmethod
-    def hidden_layers(cls):
+    def hidden_layers(self):
         return [
-            Dense(128, input_shape=(cls.VOCAB_SIZE,), activation='relu')
+            Dense(128, input_shape=(self.vocabulary_size(),),
+                  activation='relu')
         ]
 
     def vectorize_texts(self, texts):
