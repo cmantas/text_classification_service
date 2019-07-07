@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from time import time
+from sklearn.metrics import f1_score, classification_report, accuracy_score
 
 mpl.style.use('seaborn')
 
@@ -22,6 +23,7 @@ class TextModel(ABC):
         self.tokenizer = tokenizer
         self.model = self.model_description()
         self.training_history = None
+        self.report = None
 
     @abstractmethod
     def num_labels(self):
@@ -122,6 +124,7 @@ class TextModel(ABC):
         training_time = time() - start_time
         print("Total training time:", training_time)
         self.training_history = hist
+        self.create_report(val_set)
         return hist
 
     def plot_training_history(self):
@@ -143,7 +146,20 @@ class TextModel(ABC):
         plt.legend(labels, loc='center right')
         plt.show()
 
+    def create_report(self, val_set):
+        X, Y = zip(*val_set)
+        Y_pred = self.predict_labels(X)
+        f1 = f1_score(Y, Y_pred, average='macro')
+        report = classification_report(Y, Y_pred)
+        acc = accuracy_score(Y, Y_pred)
+
+        self.report = {
+            'f1_score': f1, 'validation_accuracy': acc,
+            'classifcation_report': report
+        }
 
     def describe(self):
         rv = {'num_labels': self.num_labels()}
+        if self.report is not None:
+            rv.update(self.report)
         return rv

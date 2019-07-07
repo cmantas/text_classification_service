@@ -2,7 +2,6 @@ from keras.layers import LSTM, SpatialDropout1D, Bidirectional
 from abc import ABC
 from ml_models import SequenceModel, MultiClassModel, BinaryModel
 from ml_models.layers import Attention
-from ml_models.layers.attention_layer import AttentionLayer
 
 
 class AttentionModel(SequenceModel, ABC):
