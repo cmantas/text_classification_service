@@ -14,6 +14,8 @@ from ml_models.conv_1d_model import Conv1DModel
 from ml_models.conv_2d_model import Conv2DModel
 from ml_models.fast_text_model import FastTextModel
 
+from ml_models.attention_model import AttentionBinaryModel, \
+     AttentionMulticlassModel
 
 # Concrete binary model classes
 
