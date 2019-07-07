@@ -155,7 +155,7 @@ class TextModel(ABC):
 
         self.report = {
             'f1_score': f1, 'validation_accuracy': acc,
-            'classifcation_report': report
+            'classification_report': report
         }
 
     def describe(self):
