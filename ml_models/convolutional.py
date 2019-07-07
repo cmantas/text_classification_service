@@ -1,12 +1,38 @@
-from keras.layers import Dense, Embedding, Input, Reshape, Conv2D, MaxPool2D, \
-                         Concatenate, Flatten, Dropout
 from keras import Model
-from keras.preprocessing.sequence import pad_sequences
+from keras.layers import Dense, Conv1D, GlobalMaxPooling1D, Dropout, MaxPool2D,\
+    Conv2D, Input, Reshape, Flatten, Concatenate, MaxPooling1D
+from keras import regularizers
 
-from ml_models import SequenceModel
+from abc import ABC
+
+from ml_models import SequenceModel, BinaryModel, MultiClassModel
 
 
-class Conv2DModel(SequenceModel):
+class Conv1DModel(SequenceModel, ABC):
+    BATCH_SIZE = 4000
+    # we can handle a bigger sequence size with a convolutional architecture
+    MAX_SEQ_LEN = 40
+
+    @classmethod
+    def recurrent_layers(cls):
+        num_filters = 20
+        filter_size = 5
+        return [
+            Conv1D(num_filters, filter_size, activation='relu'),
+            GlobalMaxPooling1D(),
+            # Dropout(0.1),
+            Dense(20, activation='relu'),
+            Dropout(0.05),
+        ]
+class Conv1DBinaryModel(Conv1DModel, BinaryModel):
+    pass
+
+
+class Conv1DMultiClassModel(Conv1DModel, MultiClassModel):
+    pass
+
+
+class Conv2DModel(SequenceModel, ABC):
     BATCH_SIZE = 4000
     MAX_SEQ_LEN = 100
 
@@ -69,4 +95,41 @@ class Conv2DModel(SequenceModel):
                       metrics=['accuracy'])
 
         return model
+
+
+class Conv2DBinaryModel(Conv2DModel, BinaryModel):
+    pass
+
+
+class Conv2DMultiClassModel(Conv2DModel, MultiClassModel):
+    pass
+
+#https://www.kaggle.com/vsmolyakov/keras-cnn-with-fasttext-embeddings
+class MultiStep1DCNN(SequenceModel, ABC):
+    num_filters = 64
+    weight_decay = 1e-4
+    BATCH_SIZE = 1000
+
+    @classmethod
+    def recurrent_layers(cls):
+        #num_filters = 20
+        num_filters = 5
+        weight_decay = 1e-4
+        return [
+            Conv1D(num_filters, 7, activation='relu', padding='same'),
+            MaxPooling1D(2),
+            Conv1D(num_filters, 7, activation='relu', padding='same'),
+            GlobalMaxPooling1D(),
+            Dropout(0.05),
+            Dense(32, activation='relu',
+                  kernel_regularizer=regularizers.l2(weight_decay))
+        ]
+
+
+class MultiStep1DCNNMultiClass(MultiStep1DCNN, MultiClassModel):
+    pass
+
+
+class MultiStep1DCNNBinary(MultiStep1DCNN, BinaryModel):
+    pass
 
