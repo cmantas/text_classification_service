@@ -1,11 +1,12 @@
-from keras.layers import LSTM, SpatialDropout1D, Bidirectional
+from keras.layers import LSTM, SpatialDropout1D, Bidirectional, Conv1D, \
+    MaxPooling1D, GlobalMaxPooling1D
 from abc import ABC
-from ml_models import SequenceModel, MultiClassModel, BinaryModel
+from ml_models import SequenceModel, MultiClassModel, BinaryModel, FastTextModel
 from ml_models.layers import Attention
 
 
-class AttentionModel(SequenceModel, ABC):
-    BATCH_SIZE = 500
+class LSTMAttentionModel(SequenceModel, ABC):
+    BATCH_SIZE = 1000
 
     @classmethod
     def recurrent_layers(cls):
@@ -25,11 +26,39 @@ class AttentionModel(SequenceModel, ABC):
         return layers
 
 
-class AttentionMulticlassModel(AttentionModel, MultiClassModel):
+class LSTMAttentionMulticlassModel(LSTMAttentionModel, MultiClassModel):
     pass
 
 
-class AttentionBinaryModel(AttentionModel, BinaryModel):
+class LSTMAttentionBinaryModel(LSTMAttentionModel, BinaryModel):
     pass
 
 
+class CNNAttentionModel(SequenceModel, MultiClassModel):
+    BATCH_SIZE = 1000
+
+    @classmethod
+    def recurrent_layers(cls):
+        num_filters = 5
+
+        layers = [
+            Conv1D(num_filters, 5, activation='relu', padding='same'),
+            MaxPooling1D(2),
+            Conv1D(num_filters, 5, activation='relu', padding='same'),
+            Attention()
+        ]
+
+        return layers
+
+
+class CNNAttentionMulticlassModel(CNNAttentionModel, MultiClassModel):
+    pass
+
+
+class CNNAttentionBinaryModel(CNNAttentionModel, BinaryModel):
+    pass
+
+
+class CNNAttentionMulticlassFasttextModel(CNNAttentionModel, FastTextModel,
+                                          MultiClassModel):
+    pass
