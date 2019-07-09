@@ -67,7 +67,8 @@ def load_models(models_dir):
     for fpath in model_paths:
         fname = split(fpath)[-1]
         model = pickle.load(open(fpath, 'rb'))
-        rv[fname] = model
+        mname = re.sub('.pickle$', '', fname)
+        rv[mname] = model
     return rv
 
 def list_model_types():
