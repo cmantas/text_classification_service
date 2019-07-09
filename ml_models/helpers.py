@@ -51,25 +51,6 @@ def binarize(data, balance=False, target_cid=40):
 
     return rv
 
-def vectorize_batch(batch, tokenizer, encoder):
-    texts, cats = zip(*batch)
-    X = tokenizer.texts_to_matrix(texts, mode='count')
-    Y = encoder.transform(cats)
-    return(X, Y)
-
-def batcher(phrases, batch_size):
-  for i in range(0, len(phrases), batch_size):
-    frrom = i
-    to = i+batch_size
-    yield phrases[frrom:to]
-
-def training_gen(texts, batch_size, tokenizer, label_encoder):
-  while True:
-    shuffle(texts)
-    for batch in batcher(texts, batch_size):
-      X, Y = vectorize_batch(batch, tokenizer, label_encoder)
-      yield (X, Y)
-
 
 def list_models(path):
     rv = []
