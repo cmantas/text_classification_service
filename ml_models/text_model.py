@@ -150,7 +150,7 @@ class TextModel(ABC):
         X, Y = zip(*val_set)
         Y_pred = self.predict_labels(X)
         f1 = f1_score(Y, Y_pred, average='macro')
-        report = classification_report(Y, Y_pred)
+        report = classification_report(Y, Y_pred, output_dict=True)
         acc = accuracy_score(Y, Y_pred)
 
         self.report = {
@@ -162,4 +162,5 @@ class TextModel(ABC):
         rv = {'num_labels': self.num_labels()}
         if self.report is not None:
             rv.update(self.report)
+            del(rv['classification_report'])
         return rv
