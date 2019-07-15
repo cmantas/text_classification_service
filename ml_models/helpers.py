@@ -2,6 +2,8 @@ from random import shuffle
 from os import listdir
 from os.path import isfile, join, split
 import pickle
+from inspect import getmembers, isclass, isabstract
+import ml_models
 
 def read_data(fname, token='#'):
     with open(fname) as f:
@@ -86,3 +88,10 @@ def load_models(models_dir):
         model = pickle.load(open(fpath, 'rb'))
         rv[fname] = model
     return rv
+
+def list_model_types():
+    models = []
+    for _name, obj in getmembers(ml_models):
+        if isclass(obj) and not isabstract(obj):
+            models.append(obj)
+    return models

@@ -1,22 +1,11 @@
 # load Flask
 import flask
 from flask import jsonify, request
-from inspect import getmembers, isclass, isabstract
-from ml_models.helpers import load_models
-
-import ml_models
-
-
-app = flask.Flask(__name__)
+from ml_models.helpers import load_models, list_model_types
 
 SAVED_MODELS_DIRECTORY = 'data/saved_models'
 
-def list_model_types():
-    models = []
-    for _name, obj in getmembers(ml_models):
-        if isclass(obj) and not isabstract(obj):
-            models.append(obj)
-    return models
+app = flask.Flask(__name__)
 
 
 model_classes = {m.__name__: m for m in list_model_types()}
