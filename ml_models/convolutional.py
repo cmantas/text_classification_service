@@ -7,6 +7,8 @@ from abc import ABC
 
 from ml_models import SequenceModel, BinaryModel, MultiClassModel
 
+__all__ = ['Conv1DModel', 'Conv2DModel', 'Conv1DBinaryModel',
+           'Conv1DMultiClassModel', 'Conv2DBinaryModel', 'Conv2DMultiClassModel']
 
 class Conv1DModel(SequenceModel, ABC):
     BATCH_SIZE = 4000

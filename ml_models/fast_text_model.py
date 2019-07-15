@@ -7,6 +7,8 @@ import numpy as np
 from ml_models import SequenceModel, MultiClassModel, LSTMModel
 import pickle
 
+__all__ = ['FastTextModel']
+
 #FASTTEXT_EMBEDDINGS_FILE = 'data/embeddings/wiki-news-300d-1M-subword.vec'
 FASTTEXT_EMBEDDINGS_FILE = 'data/embeddings/wiki.simple.vec'
 
@@ -94,7 +96,3 @@ class FastTextModel(SequenceModel, ABC):
         print("# words not found: ", len(words_not_found))
         print("sample words not found: ", np.random.choice(list(words_not_found), 200))
         return embedding_matrix
-
-
-class LSTMFastTextMulticlassModel(LSTMModel, FastTextModel, MultiClassModel):
-    pass

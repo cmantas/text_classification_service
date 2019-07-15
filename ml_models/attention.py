@@ -4,6 +4,9 @@ from abc import ABC
 from ml_models import SequenceModel, MultiClassModel, BinaryModel, FastTextModel
 from ml_models.layers import Attention
 
+__all__  = ['LSTMAttentionModel', 'LSTMAttentionMulticlassModel',
+            'LSTMAttentionBinaryModel', 'CNNAttentionModel',
+            'CNNAttentionBinaryModel', 'CNNAttentionMulticlassModel']
 
 class LSTMAttentionModel(SequenceModel, ABC):
     BATCH_SIZE = 1000
@@ -34,7 +37,7 @@ class LSTMAttentionBinaryModel(LSTMAttentionModel, BinaryModel):
     pass
 
 
-class CNNAttentionModel(SequenceModel, MultiClassModel):
+class CNNAttentionModel(SequenceModel):
     BATCH_SIZE = 1000
 
     @classmethod
@@ -56,9 +59,4 @@ class CNNAttentionMulticlassModel(CNNAttentionModel, MultiClassModel):
 
 
 class CNNAttentionBinaryModel(CNNAttentionModel, BinaryModel):
-    pass
-
-
-class CNNAttentionMulticlassFasttextModel(CNNAttentionModel, FastTextModel,
-                                          MultiClassModel):
     pass

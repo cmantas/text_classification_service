@@ -3,6 +3,9 @@ from keras.layers import Dense, Dropout, LeakyReLU
 from ml_models import WordLevelModel, BinaryModel, MultiClassModel
 
 
+__all__ = ['FeedForwardModel', 'FeedForwardBinaryModel',
+           'FeedForwardMultiClassModel']
+
 class FeedForwardModel(WordLevelModel):
     BATCH_SIZE = 8000
 

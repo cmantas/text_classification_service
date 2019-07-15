@@ -2,6 +2,8 @@ from keras.layers import LSTM, CuDNNLSTM
 from abc import ABC
 from ml_models import BinaryModel, MultiClassModel, SequenceModel
 
+__all__ = ['LSTMModel', 'LSTMBinaryModel', 'LSTMMultiClassModel',
+           'CUDALSTMModel', 'DropoutLSTMModel', 'SmallerLSTMModel']
 
 class LSTMModel(SequenceModel, ABC):
     BATCH_SIZE = 500

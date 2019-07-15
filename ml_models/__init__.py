@@ -17,3 +17,7 @@ from ml_models.attention import *
 
 class LSTMFastTextMulticlassModel(LSTMModel, FastTextModel, MultiClassModel):
     pass
+class LSTMFastTextMulticlassModel(LSTMModel, FastTextModel, MultiClassModel):
+    pass
+class LSTMFastTextMulticlassModel(LSTMModel, FastTextModel, MultiClassModel):
+    pass
