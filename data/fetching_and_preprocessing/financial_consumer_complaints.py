@@ -25,7 +25,7 @@ print('Lines with existing text field', len(df))
 pertinent_cols = ['Consumer complaint narrative', 'Product']
 df = df[pertinent_cols]
 
-print("Products after consolidation: ", len(df.Product.value_counts()))
+print("Products before consolidation: ", len(df.Product.value_counts()))
 print("Breakdown:\n", df['Product'].value_counts().sort_values(ascending=False))
 
 # preprocessing thanks to Susan Li from
@@ -54,4 +54,4 @@ df['Consumer complaint narrative'].str.replace(separator, ' ')
 
 # save to final output file
 df.to_csv(output_fname, index=False, sep=separator)
-remove(raw_fname)
+#remove(raw_fname)
