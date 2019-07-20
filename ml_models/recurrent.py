@@ -1,4 +1,4 @@
-from keras.layers import LSTM, CuDNNLSTM
+from keras.layers import LSTM, CuDNNLSTM, SimpleRNN
 from abc import ABC
 from ml_models import BinaryModel, MultiClassModel, SequenceModel
 
@@ -6,12 +6,13 @@ __all__ = ['LSTMModel', 'LSTMBinaryModel', 'LSTMMultiClassModel',
            'CUDALSTMModel', 'DropoutLSTMModel', 'SmallerLSTMModel']
 
 class LSTMModel(SequenceModel, ABC):
-    BATCH_SIZE = 500
-
     @classmethod
     def recurrent_layers(cls):
         return [LSTM(128)]
 
+class UnembeddedLSTMMultiClassModel(LSTMModel, MultiClassModel):
+    def hidden_layers(self):
+        return [*self.recurrent_layers()]
 
 class LSTMBinaryModel(LSTMModel, BinaryModel):
     pass
@@ -41,3 +42,17 @@ class SmallerLSTMModel(LSTMMultiClassModel):
     @classmethod
     def recurrent_layers(cls):
         return [LSTM(64)]
+
+
+class RNNModel(SequenceModel, ABC):
+    @classmethod
+    def recurrent_layers(cls):
+        return [SimpleRNN(128)]
+
+
+class RNNBinaryModel(RNNModel, BinaryModel):
+    pass
+
+
+class RNNMultiClassModel(RNNModel, MultiClassModel):
+    pass
