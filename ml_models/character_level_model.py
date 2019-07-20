@@ -1,29 +1,30 @@
-DELIMITERS = "!\"#$%&()*+,-./:;<=>?@[\]^_`{|}~'“”—…«»′"
 from ml_models import MultiClassModel
 from keras.preprocessing.text import Tokenizer
 from keras.layers import LSTM, Embedding
 from keras.preprocessing.sequence import pad_sequences
+from keras.utils import to_categorical
+
+DELIMITERS = "!\"#$%&()*+,-./:;<=>?@[]^_`{|}~'“”—…«»′"
 
 
 class CharacterLevelModel(MultiClassModel):
-    MAX_VOCAB_SIZE = 100
+    MAX_VOCAB_SIZE = 50
     MAX_SEQ_LEN = 150
     BATCH_SIZE = 2000
 
     def vectorize_texts(self, texts):
         seqs = self.tokenizer.texts_to_sequences(texts)
         X = pad_sequences(seqs, maxlen=self.MAX_SEQ_LEN)
-        return X  # to_categorical(X, num_classes=self.vocabulary_size())
+        return to_categorical(X, num_classes=self.vocabulary_size())
 
     def recurrent_layers(self):
-        return [LSTM(128)]  # , input_shape=(None, self.vocabulary_size()))]
+        return [
+            LSTM(128, input_shape=(None, self.vocabulary_size()))
+        ]
 
     def hidden_layers(self):
-        return [
-            Embedding(self.vocabulary_size(), 20,
-                      input_length=self.MAX_SEQ_LEN),
-            *self.recurrent_layers()
-        ]
+        # there is no embedding layer
+        return self.recurrent_layers()
 
     @classmethod
     def tokenizer(cls, texts):
@@ -40,6 +41,3 @@ class CharacterLevelModel(MultiClassModel):
 
     def vocabulary_size(self):
         return self.tokenizer.num_words
-
-
-model_class = CharacterLevelModel
