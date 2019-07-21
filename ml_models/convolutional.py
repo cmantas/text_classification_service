@@ -8,7 +8,8 @@ from abc import ABC
 from ml_models import SequenceModel, BinaryModel, MultiClassModel
 
 __all__ = ['Conv1DModel', 'Conv2DModel', 'Conv1DBinaryModel',
-           'Conv1DMultiClassModel', 'Conv2DBinaryModel', 'Conv2DMultiClassModel']
+           'Conv1DMultiClassModel', 'Conv2DBinaryModel', 'Conv2DMultiClassModel',
+           'Conv1DDeeperModelBinary', 'Conv1DDeeperModelMulticlass']
 
 class Conv1DModel(SequenceModel, ABC):
     BATCH_SIZE = 4000
@@ -106,8 +107,8 @@ class Conv2DBinaryModel(Conv2DModel, BinaryModel):
 class Conv2DMultiClassModel(Conv2DModel, MultiClassModel):
     pass
 
-#https://www.kaggle.com/vsmolyakov/keras-cnn-with-fasttext-embeddings
-class MultiStep1DCNN(SequenceModel, ABC):
+
+class Conv1DDeeperModel(SequenceModel, ABC):
     num_filters = 64
     weight_decay = 1e-4
     BATCH_SIZE = 1000
@@ -128,10 +129,10 @@ class MultiStep1DCNN(SequenceModel, ABC):
         ]
 
 
-class MultiStep1DCNNMultiClass(MultiStep1DCNN, MultiClassModel):
+class Conv1DDeeperModelBinary(Conv1DDeeperModel, MultiClassModel):
     pass
 
 
-class MultiStep1DCNNBinary(MultiStep1DCNN, BinaryModel):
+class Conv1DDeeperModelMulticlass(Conv1DDeeperModel, BinaryModel):
     pass
 
