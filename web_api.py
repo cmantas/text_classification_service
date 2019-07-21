@@ -2,11 +2,14 @@
 import flask
 from flask import jsonify, request
 from ml_models.helpers import load_models, list_model_types
+from os.path import join as join_path
 
 SAVED_MODELS_DIRECTORY = 'data/saved_models'
+DATASET_FOLDER = 'data'
 
 app = flask.Flask(__name__)
 
+app.config['UPLOAD_FOLDER'] = DATASET_FOLDER
 
 model_classes = {m.__name__: m for m in list_model_types()}
 
@@ -41,6 +44,17 @@ def predict(model_name):
     predictions = model.predict(texts, probability)
 
     return jsonify(predictions)
+
+
+@app.route('/model/<model_name>/train', methods=['POST'])
+def upload_file(model_name):
+    # check if the post request has the file part
+    if 'file' in request.files:
+        file = request.files['file']
+        filename = model_name + '_training_data'
+        file.save(join_path(app.config['UPLOAD_FOLDER'], filename))
+
+        return jsonify({'saved': 'OK'})
 
 # start the flask app, allow remote connections
 app.run(host='0.0.0.0', debug=True)
