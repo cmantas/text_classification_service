@@ -26,7 +26,8 @@ class FastTextModel(SequenceModel, ABC):
         return Embedding(self.vocabulary_size(), self.EMBEDDING_DIMENTION,
                          weights=[self.embeddings_matrix],
                          input_length=self.MAX_SEQ_LEN,
-                         trainable=self.TRAINABLE_EMBEDDINGS)
+                         trainable=self.TRAINABLE_EMBEDDINGS,
+                         mask_zero=True)
 
     @staticmethod
     def embeddings_index():

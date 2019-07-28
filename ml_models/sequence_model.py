@@ -8,6 +8,7 @@ from ml_models import WordLevelModel
 class SequenceModel(WordLevelModel):
     EMBEDDING_DIMENTION = 128
     MAX_SEQ_LEN = 50
+    BATCH_SIZE = 1000
 
     @classmethod
     @abstractmethod
@@ -16,7 +17,7 @@ class SequenceModel(WordLevelModel):
 
     def embedding_layer(self):
         return Embedding(self.vocabulary_size(), self.EMBEDDING_DIMENTION,
-                         input_length=self.MAX_SEQ_LEN)
+                         input_length=self.MAX_SEQ_LEN, mask_zero=True)
 
     def hidden_layers(self):
         layers = [
