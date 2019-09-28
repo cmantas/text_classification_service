@@ -1,8 +1,8 @@
 from ml_models import MultiClassModel
-from keras.preprocessing.text import Tokenizer
-from keras.layers import LSTM, Embedding
-from keras.preprocessing.sequence import pad_sequences
-from keras.utils import to_categorical
+from tensorflow.python.keras.preprocessing.text import Tokenizer
+from tensorflow.python.keras.layers import LSTM, Embedding
+from tensorflow.python.keras.preprocessing.sequence import pad_sequences
+from tensorflow.python.keras.utils import to_categorical
 
 DELIMITERS = "!\"#$%&()*+,-./:;<=>?@[]^_`{|}~'“”—…«»′"
 

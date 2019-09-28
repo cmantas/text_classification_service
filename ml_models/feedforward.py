@@ -1,4 +1,4 @@
-from keras.layers import Dense, Dropout, LeakyReLU
+from tensorflow.python.keras.layers import Dense, Dropout, LeakyReLU
 
 from ml_models import WordLevelModel, BinaryModel, MultiClassModel
 

@@ -1,4 +1,5 @@
-from keras.layers import LSTM, CuDNNLSTM, SimpleRNN
+from tensorflow.python.keras.layers import LSTM, CuDNNLSTM, SimpleRNN, GlobalMaxPooling1D, Dense, Embedding
+from tensorflow.python.keras.models import Sequential
 from abc import ABC
 from ml_models import BinaryModel, MultiClassModel, SequenceModel
 

@@ -1,5 +1,5 @@
 from abc import ABC
-from keras.layers import Embedding
+from tensorflow.python.keras.layers import Embedding
 from os.path import isfile
 import codecs
 from tqdm import tqdm

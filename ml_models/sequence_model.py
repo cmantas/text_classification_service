@@ -1,6 +1,6 @@
-from keras.layers import Embedding
+from tensorflow.python.keras.layers import Embedding
 from abc import abstractmethod
-from keras.preprocessing.sequence import pad_sequences
+from tensorflow.python.keras.preprocessing.sequence import pad_sequences
 
 from ml_models import WordLevelModel
 

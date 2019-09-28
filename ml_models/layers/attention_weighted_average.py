@@ -2,10 +2,9 @@
 # https://github.com/tsterbak/keras_attention/blob/master/models.py
 
 
-from keras.engine.topology import Layer
-from keras.layers import InputSpec
-from keras import initializers as initializers, regularizers, constraints
-from keras import backend as K
+from tensorflow.python.keras.layers import Layer, InputSpec
+from tensorflow.python.keras import initializers as initializers, regularizers, constraints
+from tensorflow.python.keras import backend as K
 
 class AttentionWeightedAverage(Layer):
     """
@@ -22,7 +21,7 @@ class AttentionWeightedAverage(Layer):
         self.supports_masking = True
         self.return_attention = return_attention
         self.w = None
-        self.trainable_weights = None
+        self._trainable_weights = None
         super().__init__(**kwargs)
 
     def build(self, input_shape):

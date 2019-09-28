@@ -1,7 +1,6 @@
-from keras import Model
-from keras.layers import Dense, Conv1D, GlobalMaxPooling1D, Dropout, MaxPool2D,\
+from tensorflow.python.keras import Model, regularizers
+from tensorflow.python.keras.layers import Dense, Conv1D, GlobalMaxPooling1D, Dropout, MaxPool2D,\
     Conv2D, Input, Reshape, Flatten, Concatenate, MaxPooling1D
-from keras import regularizers
 
 from abc import ABC
 

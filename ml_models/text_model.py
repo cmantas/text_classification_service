@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from random import shuffle
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import matplotlib as mpl
