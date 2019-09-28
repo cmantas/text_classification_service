@@ -8,7 +8,7 @@ from ml_models import WordLevelModel
 class SequenceModel(WordLevelModel):
     EMBEDDING_DIMENTION = 128
     MAX_SEQ_LEN = 50
-    BATCH_SIZE = 1000
+    BATCH_SIZE = 2000
 
     @classmethod
     @abstractmethod

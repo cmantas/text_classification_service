@@ -4,7 +4,8 @@ from abc import ABC
 from ml_models import BinaryModel, MultiClassModel, SequenceModel
 
 __all__ = ['LSTMModel', 'LSTMBinaryModel', 'LSTMMultiClassModel',
-           'CUDALSTMModel', 'DropoutLSTMModel', 'SmallerLSTMModel']
+           'CUDALSTMModel', 'DropoutLSTMModel', 'SmallerLSTMModel',
+           'LSTMMaxPooledModel']
 
 class LSTMModel(SequenceModel, ABC):
     @classmethod
@@ -57,3 +58,20 @@ class RNNBinaryModel(RNNModel, BinaryModel):
 
 class RNNMultiClassModel(RNNModel, MultiClassModel):
     pass
+
+class LSTMMaxPooledModel(LSTMModel, MultiClassModel):
+    def model_description(self):
+        layers = [
+            Embedding(self.vocabulary_size(), self.EMBEDDING_DIMENTION,
+                      input_length=self.MAX_SEQ_LEN, mask_zero=False), # masking not supported by GlobalMaxPooling
+            LSTM(128, return_sequences = True),
+            GlobalMaxPooling1D(),
+            # The last layer of the model will be a dense layer with a size
+            # equal to the number of layers
+            Dense(self.num_labels(), activation=self.ACTIVATION)
+        ]
+        model = Sequential(layers)
+
+        model.compile(loss=self.LOSS_FUNCTION,
+                      optimizer='adam', metrics=['accuracy'])
+        return model
