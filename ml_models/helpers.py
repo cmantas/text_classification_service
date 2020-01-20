@@ -4,6 +4,13 @@ from os.path import isfile, join, split
 import pickle
 from inspect import getmembers, isclass, isabstract
 import ml_models
+from tensorflow.keras.models import load_model as load_keras_model
+
+def load_model(prefix):
+    obj = pickle.load(open(prefix + '.pickle', 'rb'))
+    keras_model = load_keras_model(prefix + '.h5')
+    obj.model = keras_model
+    return obj
 
 def read_data(fname, token='#'):
     with open(fname) as f:

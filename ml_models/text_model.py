@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from time import time
 from sklearn.metrics import f1_score, classification_report, accuracy_score
+import pickle
 
 mpl.style.use('seaborn')
 
@@ -164,3 +165,13 @@ class TextModel(ABC):
             rv.update(self.report)
             del(rv['classification_report'])
         return rv
+
+    def save(self, prefix):
+      # temporarily remove the tf model from self as a workaround for being able
+      # to pickle the whole TextModel object
+      model = self.model
+      self.model = None
+      pickle.dump(self, open(prefix + '.pickle', 'wb'))
+      self.model = model
+      # save the Keras object separately
+      model.save(prefix + '.h5')
