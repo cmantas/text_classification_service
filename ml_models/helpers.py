@@ -5,6 +5,7 @@ import pickle
 from inspect import getmembers, isclass, isabstract
 import ml_models
 from tensorflow.keras.models import load_model as load_keras_model
+import re
 
 def load_model(prefix):
     obj = pickle.load(open(prefix + '.pickle', 'rb'))
@@ -64,7 +65,7 @@ def list_models(path):
     for f in listdir(path):
         fpath = join(path, f)
         if isfile(fpath) and f.endswith('.pickle'):
-            rv.append(fpath)
+            rv.append(fpath[0:-7])
     return rv
 
 
@@ -73,9 +74,8 @@ def load_models(models_dir):
     rv = {}
     for fpath in model_paths:
         fname = split(fpath)[-1]
-        model = pickle.load(open(fpath, 'rb'))
-        mname = re.sub('.pickle$', '', fname)
-        rv[mname] = model
+        model = load_model(fpath)
+        rv[fname] = model
     return rv
 
 def list_model_types():
