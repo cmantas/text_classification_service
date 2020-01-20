@@ -123,7 +123,7 @@ class TextModel(ABC):
                                         verbose=1)
         training_time = time() - start_time
         print("Total training time:", training_time)
-        self.training_history = hist
+        self.training_history = hist.history
         self.create_report(val_set)
         return hist
 
@@ -131,7 +131,7 @@ class TextModel(ABC):
         """plots the metrics of an instance of this model's training history"""
         if self.training_history is None:
             raise Exception('Model has not been trained yet')
-        history = self.training_history.history
+        history = self.training_history
         plt.plot(history['loss'])
         labels = ['training loss']
         metrics = {'val_loss': 'validation loss', 'acc': 'training accuracy',
