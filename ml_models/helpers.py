@@ -68,6 +68,9 @@ def list_models(path):
             rv.append(fpath[0:-7])
     return rv
 
+def describe_models(models):
+    return {fname: model.describe() for fname, model in models.items()}
+
 
 def load_models(models_dir):
     model_paths = list_models(models_dir)

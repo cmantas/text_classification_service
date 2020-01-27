@@ -1,7 +1,7 @@
 # load Flask
 import flask
 from flask import jsonify, request
-from ml_models.helpers import load_models, list_model_types
+from ml_models.helpers import load_models, list_model_types, describe_models
 from os.path import join as join_path
 
 SAVED_MODELS_DIRECTORY = 'data/saved_models'
@@ -26,7 +26,7 @@ def model_types():
 
 @app.route('/saved_models', methods=['GET'])
 def list_saved_models():
-    rsp = {fname: model.describe() for fname, model in saved_models.items()}
+    rsp = describe_models(saved_models)
     return jsonify(rsp)
 
 
