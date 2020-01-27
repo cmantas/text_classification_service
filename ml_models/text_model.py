@@ -148,7 +148,7 @@ class TextModel(ABC):
         plt.show()
 
     def create_report(self, val_set):
-        X, Y = zip(*val_set)
+        X, Y = list(zip(*val_set))[:2]
         Y_pred = self.predict_labels(X)
         f1 = f1_score(Y, Y_pred, average='macro')
         report = classification_report(Y, Y_pred, output_dict=True)
