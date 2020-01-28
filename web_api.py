@@ -1,10 +1,10 @@
 # load Flask
 import flask
 from flask import jsonify, request
+import settings
 from ml_models.helpers import load_models, list_model_types, describe_models
 from os.path import join as join_path
 
-SAVED_MODELS_DIRECTORY = 'data/saved_models'
 DATASET_FOLDER = 'data'
 
 app = flask.Flask(__name__)
@@ -14,7 +14,7 @@ app.config['UPLOAD_FOLDER'] = DATASET_FOLDER
 model_classes = {m.__name__: m for m in list_model_types()}
 
 # Load saved models
-saved_models = load_models(SAVED_MODELS_DIRECTORY)
+saved_models = load_models(settings.saved_models_dir)
 
 
 @app.route('/model_types', methods=['GET'])
