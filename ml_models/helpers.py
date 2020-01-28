@@ -6,17 +6,6 @@ from inspect import getmembers, isclass, isabstract
 import ml_models
 import re
 
-
-def read_data(fname, token='#'):
-    with open(fname) as f:
-        lines = f.readlines()
-        rv = []
-        for l in lines:
-            l = l.strip()
-            elems = l.split(token)
-            rv.append(elems)
-        return rv
-
 def read_weighted_data(fname, token='#', limit=None):
     rv = []
     with open(fname) as f:
