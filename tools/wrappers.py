@@ -8,8 +8,8 @@ from tools.models import *
 MULTICLASS_TEXT_MODEL = FeedForwardMultiClassModel
 
 def create_and_train_text_model(dataset_fname, model_name, epochs, limit=0,
-                                seed=42, val_size=0):
-    dataset = read_dataset(dataset_fname)
+                                seed=42, val_size=0, delim="\t"):
+    dataset = read_dataset(dataset_fname, delim)
     print("Size:", len(dataset))
 
     if len(dataset) == 0:

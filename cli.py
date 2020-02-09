@@ -25,6 +25,8 @@ def list_models():
 @click.argument('model_name')
 @click.option('--epochs', default=1, help='how many epochs to train for')
 @click.option('--limit', default=0, help='limit the ammount of training data')
+@click.option('--delimiter', default="\t",
+              help='the character to use as the delim in the training file')
 @click.option('--validation-size', default=10_000,
               help='the size of the validation (when training)')
 def train(**kwargs):
@@ -37,11 +39,13 @@ def train(**kwargs):
     epochs = kwargs['epochs']
     limit = kwargs['limit']
     val_size = kwargs['validation_size']
+    delim = kwargs['delimiter']
 
     print('training on:', train_fname, 'saved as', model_name, 'with', epochs,
           'epochs', 'limit', limit)
-    description = create_and_train_text_model(train_fname, model_name, epochs,
-                                              val_size=val_size, limit=limit)
+    description = create_and_train_text_model(
+        train_fname, model_name, epochs, val_size=val_size,
+        limit=limit, delim=delim)
 
     print('Trained Model Info:')
     present(description)
