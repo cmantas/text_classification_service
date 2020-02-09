@@ -9,16 +9,18 @@ def list_models(path):
     for f in listdir(path):
         fpath = join(path, f)
         if isfile(fpath) and f.endswith('.pickle'):
-            rv.append(fpath[0:-7])
+            rv.append(fpath)
     return rv
 
 def load_models(models_dir):
     model_paths = list_models(models_dir)
     rv = {}
     for fpath in model_paths:
-        fname = split(fpath)[-1]
+        # keep the last filename (without .pickle) as the model
+        # name
+        name = split(fpath)[-1][0:-7]
         model = load_model(fpath)
-        rv[fname] = model
+        rv[name] = model
     return rv
 
 def describe_models(models):
