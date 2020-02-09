@@ -2,7 +2,8 @@
 import flask
 from flask import jsonify, request
 import settings
-from ml_models.helpers import load_models, list_model_types, describe_models
+from ml_models.helpers import list_model_types
+from tools.models import load_models, describe_models
 from os.path import join as join_path
 
 DATASET_FOLDER = 'data'
@@ -56,5 +57,6 @@ def upload_file(model_name):
 
         return jsonify({'saved': 'OK'})
 
-# start the flask app, allow remote connections
-app.run(host='0.0.0.0', debug=True)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)
