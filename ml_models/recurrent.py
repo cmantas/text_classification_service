@@ -1,5 +1,6 @@
-from tensorflow.python.keras.layers import LSTM, CuDNNLSTM, SimpleRNN, GlobalMaxPooling1D, Dense, Embedding
-from tensorflow.python.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, SimpleRNN, \
+     GlobalMaxPooling1D, Dense, Embedding
+from tensorflow.keras.models import Sequential
 from abc import ABC
 from ml_models import BinaryModel, MultiClassModel, SequenceModel
 
@@ -29,7 +30,7 @@ class CUDALSTMModel(LSTMModel):
     # layer (for performance)
     @classmethod
     def recurrent_layers(cls):
-        return [CuDNNLSTM(128)]
+        return [LSTM(128)]
 
 
 class DropoutLSTMModel(LSTMMultiClassModel):

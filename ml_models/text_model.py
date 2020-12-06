@@ -117,12 +117,12 @@ class TextModel(ABC):
         steps_per_epoch = len(train_set) / self.BATCH_SIZE
 
         start_time = time()
-        hist = self.model.fit_generator(gen,
-                                        epochs=epochs,
-                                        steps_per_epoch=steps_per_epoch,
-                                        validation_data=val_data,
-                                        max_queue_size=2,
-                                        verbose=1)
+        hist = self.model.fit(gen,
+                              epochs=epochs,
+                              steps_per_epoch=steps_per_epoch,
+                              validation_data=val_data,
+                              max_queue_size=1,
+                              verbose=1)
         training_time = time() - start_time
         print("Total training time:", training_time)
         self.training_history = hist.history
