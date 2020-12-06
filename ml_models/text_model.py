@@ -42,12 +42,15 @@ class TextModel(ABC):
         pass
 
     def model_description(self):
+        print(f"Creating a {self.__class__.__name__} Model")
+
         layers = [
             *self.hidden_layers(),
             # The last layer of the model will be a dense layer with a size
             # equal to the number of layers
             Dense(self.num_labels(), activation=self.ACTIVATION)
         ]
+        print("Layers:", [l.__class__.__name__ for l in layers])
         model = Sequential(layers)
 
         model.compile(loss=self.LOSS_FUNCTION,
@@ -99,7 +102,7 @@ class TextModel(ABC):
 
     def predict_labels(self, texts):
         X = self.vectorize_texts(texts)
-        predictions = self.model.predict_classes(X)
+        predictions = self.model.predict(X).argmax(-1)
 
         return predictions
 
