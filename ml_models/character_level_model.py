@@ -1,30 +1,20 @@
 from ml_models import MultiClassModel
+from ml_models import SequenceModel
 from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.layers import LSTM, Embedding
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.layers import LSTM, Embedding, Lambda
+
+from tensorflow import one_hot
 
 DELIMITERS = "!\"#$%&()*+,-./:;<=>?@[]^_`{|}~'“”—…«»′"
 
 
-class CharacterLevelModel(MultiClassModel):
+class CharacterLevelModel(MultiClassModel, SequenceModel):
     MAX_VOCAB_SIZE = 50
     MAX_SEQ_LEN = 150
     BATCH_SIZE = 2000
 
-    def vectorize_texts(self, texts):
-        seqs = self.tokenizer.texts_to_sequences(texts)
-        X = pad_sequences(seqs, maxlen=self.MAX_SEQ_LEN)
-        return to_categorical(X, num_classes=self.vocabulary_size())
-
-    def recurrent_layers(self):
-        return [
-            LSTM(128, input_shape=(None, self.vocabulary_size()))
-        ]
-
-    def hidden_layers(self):
-        # there is no embedding layer
-        return self.recurrent_layers()
+    def embedding_layer(self):
+        return Lambda(lambda x: one_hot(x, self.vocabulary_size()))
 
     @classmethod
     def tokenizer(cls, texts):
