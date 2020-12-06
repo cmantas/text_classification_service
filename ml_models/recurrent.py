@@ -2,11 +2,12 @@ from tensorflow.keras.layers import LSTM, SimpleRNN, \
      GlobalMaxPooling1D, Dense, Embedding
 from tensorflow.keras.models import Sequential
 from abc import ABC
-from ml_models import BinaryModel, MultiClassModel, SequenceModel
+from ml_models import BinaryModel, MultiClassModel, SequenceModel,\
+    CharacterLevelModel
 
 __all__ = ['LSTMModel', 'LSTMBinaryModel', 'LSTMMultiClassModel',
            'CUDALSTMModel', 'DropoutLSTMModel', 'SmallerLSTMModel',
-           'LSTMMaxPooledModel']
+           'LSTMMaxPooledModel', 'LSTMCharacterMultiClassModel']
 
 class LSTMModel(SequenceModel, ABC):
     @classmethod
@@ -22,6 +23,10 @@ class LSTMBinaryModel(LSTMModel, BinaryModel):
 
 
 class LSTMMultiClassModel(LSTMModel, MultiClassModel):
+    pass
+
+
+class LSTMCharacterMultiClassModel(CharacterLevelModel, LSTMModel):
     pass
 
 
