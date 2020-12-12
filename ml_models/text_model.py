@@ -113,6 +113,8 @@ class TextModel(ABC):
 
     def train(self, data, test_size, epochs):
         train_set, val_set = train_test_split(data, test_size=test_size)
+        print(f"Trainging on {len(train_set)} examples, "
+              f"validating on {len(val_set)}")
 
         val_data = self.vectorize_batch(val_set)
 
