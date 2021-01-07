@@ -33,7 +33,7 @@ class FastTextModel(SequenceModel, ABC):
     def embeddings_index():
         """Loads the embeddings from a file and creates an index from a token
            to its embedding vector.
-           The index contains all tokens for which there are available 
+           The index contains all tokens for which there are available
            embeddings.
         """
         pickle_cache = FASTTEXT_EMBEDDINGS_FILE + '.pickle'
@@ -44,27 +44,35 @@ class FastTextModel(SequenceModel, ABC):
 
         embeddings_index = {}
         print('Building the embedding index')
-        with codecs.open(FASTTEXT_EMBEDDINGS_FILE, encoding='utf-8') as f:
-            for line in tqdm(f):
-                values = line.rstrip().rsplit(' ')
-                if len(values) == 2:
-                    continue
-                word = values[0]
-                coefs = np.asarray(values[1:], dtype='float32')
-                embeddings_index[word] = coefs
+        try:
+            with codecs.open(FASTTEXT_EMBEDDINGS_FILE, encoding='utf-8') as f:
+                for line in tqdm(f):
+                    values = line.rstrip().rsplit(' ')
+                    if len(values) == 2:
+                        continue
+                    word = values[0]
+                    coefs = np.asarray(values[1:], dtype='float32')
+                    embeddings_index[word] = coefs
+        except FileNotFoundError:
+            print("Embedding file not found. "
+                  "Using an empty/dummy embedding index")
 
-        # save the embedding index as a pickle for future use
-        pickle.dump(embeddings_index, open(pickle_cache, 'wb'))
+        if len(embeddings_index) > 0:
+            # save the embedding index as a pickle for future use
+            pickle.dump(embeddings_index, open(pickle_cache, 'wb'))
         return embeddings_index
 
     EMBEDDINGS_INDEX = embeddings_index.__func__()
     # We can deduce the embedding dim. from the size of the loaded embeddings
-    EMBEDDING_DIMENTION = len(list(EMBEDDINGS_INDEX.values())[0])
+    if len(EMBEDDINGS_INDEX) == 0:
+        EMBEDDING_DIMENTION = 0
+    else:
+        EMBEDDING_DIMENTION = len(list(EMBEDDINGS_INDEX.values())[0])
 
     def create_embedding_matrix(self):
         """It looks up all the tokens of the model's tokenizer (aka. the top
            tokens of our corpus) and creates and matrix embedding the ones that
-           are known from our embeddings corpus to their respective vectors 
+           are known from our embeddings corpus to their respective vectors
            (the rest are embedded to zero)
         """
         print('creating embedding matrix')
